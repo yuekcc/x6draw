@@ -26,7 +26,11 @@
       "mocha": true
     },
     "parserOptions": {
-      "sourceType": "module"
+      "ecmaVersion": "latest",
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
     },
     "plugins": [
       "prettier"
