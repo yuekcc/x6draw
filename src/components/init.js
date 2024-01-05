@@ -1,15 +1,19 @@
 import { Graph } from '@antv/x6';
 
+/**
+ * @type {Partial<import('@antv/x6').Options.Manual>}
+ */
 const defaultOptions = {
   panning: true,
   mousewheel: true,
+  autoResize: true,
   background: {
     color: '#F2F7FA',
   },
   grid: {
     visible: true,
     size: 20,
-    type: 'fixedDot',
+    type: 'dot',
     args: {
       color: '#a0a0a0', // 网点颜色
       thickness: 2, // 网点大小

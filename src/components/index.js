@@ -1,2 +1,2 @@
-import Board from './Board.vue';
-export default Board;
+import XBoard from './XBoard';
+export default XBoard;
