@@ -5,7 +5,7 @@
   "compilerOptions": {
     "target": "ES2018",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"],
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
@@ -15,6 +15,7 @@
     "noEmit": true,
     "baseUrl": ".",
     "jsxImportSource": "vue",
+    "jsx": "preserve",
     "paths": {
       "~/*": ["./src/*"],
       "@/*": ["./src/*"]
