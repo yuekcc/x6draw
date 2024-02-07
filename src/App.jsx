@@ -9,6 +9,7 @@ export default defineComponent({
         shape: 'rect',
         x: 100,
         y: 40,
+        label: 'XX',
         width: 100,
         height: 40,
       }],

@@ -1,4 +1,4 @@
-import { Graph, Options } from "@antv/x6";
+import { Graph, Options, Node, Edge } from "@antv/x6";
 
 const defaultOptions: Partial<Options.Manual> = {
 	panning: true,
@@ -18,9 +18,9 @@ const defaultOptions: Partial<Options.Manual> = {
 	},
 };
 
-export interface GraphData {
-	nodes: any[];
-	edges: any[];
+export interface GraphMetadata {
+	nodes: Partial<Node.Metadata>[];
+	edges: Partial<Edge.Metadata>[];
 }
 
 export type FlowchartDrawPlugin = (gi: Graph) => void | Promise<void>;
@@ -44,31 +44,45 @@ export function bindHotKeys(gi: InstanceType<typeof Graph>) {}
  */
 export function bindChangeEvents(
 	gi: InstanceType<typeof Graph>,
-	emitData: (data: any) => void,
+	onData: (data: GraphMetadata) => void,
 ) {
-	const buf: any[] = [];
+	const buf: GraphMetadata[] = [];
 
 	function readToBuffer() {
 		const { cells } = gi.toJSON();
-		const graphData = { nodes: [], edges: [] };
+		const result: GraphMetadata = { nodes: [], edges: [] };
 		for (const cell of cells) {
 			if (cell.shape === "edge") {
-				graphData.edges.push(cell);
+				result.edges.push(cell);
 			} else {
-				graphData.nodes.push(cell);
+				result.nodes.push(cell);
 			}
 		}
 
-		buf.push(graphData);
+		buf.push(result);
 	}
 
-	gi.on("cell:mouseup", () => {
+	function emitData() {
 		const lastData = buf.pop();
-		emitData(lastData);
+		if (lastData) {
+			onData(lastData);
+		}
 		buf.length = 0;
-	});
+	}
 
-	gi.on("node:change:position", () => {
-		readToBuffer();
-	});
+	gi.on("cell:mouseup", () => emitData());
+	gi.on("node:change:position", () => readToBuffer());
+	gi.on("edge:change:vertices", () => readToBuffer());
+
+	const editEvents = [
+		"node:added",
+		"node:moved",
+		"node:removed",
+		"node:resized",
+		"edge:connected",
+		"edge:removed",
+	];
+	for (const eventName of editEvents) {
+		gi.on(eventName, () => emitData());
+	}
 }

@@ -8,12 +8,17 @@ export default defineComponent({
   props: {
     plugins: {
       type: Array as PropType<FlowchartDrawPlugin[]>,
-      default: () => []
+      default: () => [],
     },
   },
   setup(props, { slots, expose }) {
     const graphContainer = ref<HTMLDivElement | null>(null);
     let GI: InstanceType<typeof Graph> | null = null;
+    function cleanX6() {
+      GI?.off();
+      GI?.dispose();
+      GI = null;
+    }
 
     async function setupX6() {
       if (!graphContainer.value) {
@@ -21,26 +26,23 @@ export default defineComponent({
       }
 
       if (GI !== null) {
-        GI.off();
-        GI.dispose();
-        GI = null;
+        cleanX6();
       }
 
       GI = initX6(graphContainer.value);
-      for(const install of props.plugins) {
-        await install(GI)
+      for (const installPlugin of props.plugins) {
+        if (GI) {
+          await installPlugin(GI);
+        }
       }
     }
 
     onMounted(() => {
       setupX6();
-
     });
 
     onBeforeUnmount(() => {
-      GI?.off();
-      GI?.dispose();
-      GI = null;
+      cleanX6();
     });
 
     function getGraphInstance() {
@@ -51,14 +53,14 @@ export default defineComponent({
 
     return () => {
       return (
-        <div class="x-draw">
-          <div ref={graphContainer} class="x-draw-board">
-            x-draw-board
+        <div class="flowchart-draw">
+          <div ref={graphContainer} class="fd-board">
+            {/* x6 mount point */}
           </div>
-          <div class="x-draw-left-top-toolbar">x-draw-left-top-toolbar</div>
-          <div class="x-draw-right-top-toolbar">x-draw-right-top-toolbar</div>
-          <div class="x-draw-left-bottom-toolbar">x-draw-left-bottom-toolbar</div>
-          <div class="x-draw-right-bottom-toolbar">x-draw-right-bottom-toolbar</div>
+          <div class="fd-tl-toolbar">{slots.tlToolbar?.() || <span>tl</span>}</div>
+          <div class="fd-tr-toolbar">{slots.trToolbar?.() || <span>tr</span>}</div>
+          <div class="fd-bl-toolbar">{slots.blToolbar?.() || <span>bl</span>}</div>
+          <div class="fd-br-toolbar">{slots.brToolbar?.() || <span>br</span>}</div>
         </div>
       );
     };

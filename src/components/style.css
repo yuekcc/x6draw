@@ -1,10 +1,8 @@
-.x-draw {
+.flowchart-draw {
   position: relative;
   z-index: auto;
 
-  --toolbar-height: 40px;
-
-  .x-draw-board {
+  .fd-board {
     position: absolute;
     top: 0;
     right: 0;
@@ -13,35 +11,31 @@
     z-index: 10;
   }
 
-  .x-draw-left-top-toolbar {
+  .fd-tl-toolbar {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 20;
-    height: var(--toolbar-height);
   }
 
-  .x-draw-right-top-toolbar {
+  .fd-tr-toolbar {
     position: absolute;
     top: 0;
     right: 0;
     z-index: 20;
-    height: var(--toolbar-height);
   }
 
-  .x-draw-left-bottom-toolbar {
+  .fd-bl-toolbar {
     position: absolute;
     bottom: 0;
     left: 0;
     z-index: 20;
-    height: var(--toolbar-height);
   }
 
-  .x-draw-right-bottom-toolbar {
+  .fd-br-toolbar {
     position: absolute;
     right: 0;
     bottom: 0;
     z-index: 20;
-    height: var(--toolbar-height);
   }
 }
