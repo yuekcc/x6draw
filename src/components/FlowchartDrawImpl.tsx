@@ -6,7 +6,7 @@ import './style.css';
 
 export default defineComponent({
   props: {
-    plugins: {
+    tools: {
       type: Array as PropType<FlowchartDrawPlugin[]>,
       default: () => [],
     },
@@ -30,9 +30,9 @@ export default defineComponent({
       }
 
       GI = initX6(graphContainer.value);
-      for (const installPlugin of props.plugins) {
+      for (const addTool of props.tools) {
         if (GI) {
-          await installPlugin(GI);
+          await addTool(GI);
         }
       }
     }
