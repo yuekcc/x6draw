@@ -1,8 +1,8 @@
-import { defineComponent, VNode, type DefineComponent } from "vue";
+import type { Component, VNode } from "vue";
 
 export interface ToolbarItem {
 	label: string;
-	icon: DefineComponent<any, any, any>;
+	icon: Component;
 	render?: (...arg: any[]) => VNode;
 	onClick: () => void | Promise<void>;
 }

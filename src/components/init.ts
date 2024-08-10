@@ -39,6 +39,36 @@ export function initX6(container: HTMLElement) {
  */
 export function bindHotKeys(gi: InstanceType<typeof Graph>) {}
 
+export function fixedXOfStageNode(gi: InstanceType<typeof Graph>) {
+	let posStart: { x: number; y: number } | null = null;
+	gi.on("node:move", ({ node }) => {
+		if (node.shape !== "stage-node") {
+			return;
+		}
+		posStart = node.getPosition();
+	});
+
+	gi.on("node:moving", ({ node }) => {
+		if (node.shape !== "stage-node") {
+			return;
+		}
+
+		const { y } = node.getPosition();
+    if(posStart) {
+      node.setPosition({ x: posStart.x, y });
+    }
+		
+	});
+
+	gi.on("node:moved", ({ node }) => {
+		if (node.shape !== "stage-node") {
+			return;
+		}
+
+		posStart = null
+	});
+}
+
 /**
  * 绑定事件处理器
  */

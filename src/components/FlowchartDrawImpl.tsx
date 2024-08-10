@@ -1,6 +1,7 @@
-import { Graph } from '@antv/x6';
+import type { Graph } from '@antv/x6';
 import { defineComponent, onBeforeUnmount, onMounted, ref, type PropType } from 'vue';
 import { initX6, type FlowchartDrawPlugin } from './init';
+import { useCustomShapes } from './shapes';
 
 import './style.css';
 
@@ -12,6 +13,8 @@ export default defineComponent({
     },
   },
   setup(props, { slots, expose }) {
+    useCustomShapes();
+
     const graphContainer = ref<HTMLDivElement | null>(null);
     let GI: InstanceType<typeof Graph> | null = null;
     function cleanX6() {

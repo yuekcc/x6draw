@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue';
-import { ToolbarItem } from './types';
+import type { ToolbarItem } from './types';
 
 interface Props {
   buttons: Array<ToolbarItem>;
@@ -15,7 +15,7 @@ export const Toolbar = defineComponent(
 
       const Icon = config.icon;
       return (
-        <div onClick={() => config.onClick()} title={config.label}>
+        <div onClick={() => config.onClick()} title={config.label} key={config.label}>
           <Icon />
         </div>
       );

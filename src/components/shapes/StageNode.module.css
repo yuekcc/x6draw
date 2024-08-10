@@ -1,0 +1,19 @@
+.stageNode {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 100%;
+  grid-template-columns: 100px 1fr;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  .name {
+    padding: 8px;
+    border-right: 1px solid #ccc;
+  }
+
+  .content {
+    padding: 8px;
+  }
+}

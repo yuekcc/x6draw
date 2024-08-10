@@ -1,7 +1,13 @@
 import { DefineComponent, PropType, defineComponent, ref } from 'vue';
 import FlowchartDrawImpl from './FlowchartDrawImpl';
 import { DownloadIcon } from './icon/DownloadIcon';
-import { bindChangeEvents, bindHotKeys, type FlowchartDrawPlugin, type GraphMetadata } from './init';
+import {
+  bindChangeEvents,
+  fixedXOfStageNode,
+  bindHotKeys,
+  type FlowchartDrawPlugin,
+  type GraphMetadata,
+} from './init';
 import { ToolbarItem } from './types';
 import { Graph } from '@antv/x6';
 import { Toolbar } from './Toolbar';
@@ -27,8 +33,8 @@ function useBrToolbar(getGraphInstance: () => Graph) {
   ];
 
   return () => {
-    const buttons_ = config
-    return <Toolbar buttons={buttons_} />
+    const buttons_ = config;
+    return <Toolbar buttons={buttons_} />;
   };
 }
 
@@ -62,12 +68,12 @@ export function useFlowchartDraw() {
         };
         gi.on('render:done', onRenderDone);
 
-        const nodes = props.modelValue.nodes.map(it => gi.createNode(it));
-        const edges = props.modelValue.edges.map(it => gi.createEdge(it));
+        const nodes = props.modelValue.nodes.map(it => gi.createNode({ ...it, data: it }));
+        const edges = props.modelValue.edges.map(it => gi.createEdge({ ...it, data: it }));
         gi.resetCells([...nodes, ...edges]);
       };
 
-      const tools = [bindHotKeys, wrappedEventHandlers, renderModelValue, zoomAndFit];
+      const tools = [bindHotKeys, wrappedEventHandlers, renderModelValue, zoomAndFit, fixedXOfStageNode];
       return () => (
         <FlowchartDrawImpl
           ref={flowchartRef}
